@@ -128,6 +128,23 @@ function doRiver(x, y) {
   noStroke();
 }
 
+function doWaterfall(x, y, weight, length, xVary) {
+  noFill();
+  strokeWeight(weight);
+  stroke("#169bf7");
+  bezier(
+    x,
+    y,
+    x + xVary,
+    y + length / 2,
+    x - xVary,
+    y + length,
+    x,
+    y + length * 2
+  );
+  noStroke();
+}
+
 function doTusks() {
   let x = 500;
   let y = 400;
@@ -233,16 +250,24 @@ function doTerrain() {
     fill("#416C6C");
     triangle(-200, 425, 0, mHeight(425), 400, 425);
   } else if (vine_location == 4) {
-    //greenland
+    //madeira
     doGround(375);
 
-    fill("#CCD8D9");
-    triangle(-100, 375, 70, mHeight(375), 300, 375);
-    triangle(200, 375, 425, mHeight(375), 900, 375);
-    fill("#91adb0");
-    triangle(-200, 420, 210, mHeight(420), 1000, 420);
-    fill("#48767b");
-    triangle(250, 475, 590, mHeight(475), 900, 475);
+    fill("#dad78d");
+    triangle(-100, 375, 70, mHeight(225), 300, 375);
+    triangle(200, 375, 425, mHeight(255), 900, 375);
+
+    doWaterfall(25, 340, 3, -44, 24);
+    doWaterfall(410, 265, 3, 20, 17);
+
+    fill("#6a7325");
+    triangle(-200, 420, 210, mHeight(320), 1000, 420);
+
+    doWaterfall(75, 340, 3, 38, 24);
+    doWaterfall(490, 340, 3, 38, -24);
+
+    fill("#b3c480");
+    triangle(250, 475, 590, mHeight(455), 900, 475);
   } else if (vine_location == 5) {
     //kashmere
     doGround(275);
