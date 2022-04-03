@@ -1,16 +1,18 @@
 const urlParams = new URLSearchParams(window.location.search);
 const seed = urlParams.get("seed").split("-");
 
-let vine_location = parseInt(seed[0]);
-let vine_elevation = parseInt(seed[1]);
+const vine_location = parseInt(seed[0]);
+const vine_elevation = parseInt(seed[1]);
 if (seed[2] == 1) vine_elevation *= -1;
-let vine_soil = parseInt(seed[3]);
-let vine_xp = parseInt(seed[4]);
+const vine_soil = parseInt(seed[3]);
+const vine_xp = parseInt(seed[4]);
 
 const day = 86400;
+const climates = [0, 1, 2, 3, 4, 5, 6, 3, 7, 8, 1, 9, 4, 1, 2];
+const offsets = [2, 9, -7, -10, -2, 5, 9, 7, 6, -4, -4, 7, 8, -4, 2];
+
 let numStars;
 let numVines = 20;
-
 let sky = [];
 let vines = [];
 let cloudX = -200;
@@ -70,7 +72,6 @@ function draw() {
 
 function timeOfDay() {
   const seconds = Math.floor((Date.now() / 1000) % (24 * 60 * 60));
-  const offsets = [2, 9, -7, -10, -2, 5, 9, 7, 6, -4, -4, 7, 8, -4, 2];
   return seconds + offsets[vine_location] * 60 * 60;
 }
 
@@ -85,11 +86,6 @@ function backgroundFromTime() {
   if (time <= day / 2) result = factor * 255;
   else result = -(factor - 1) * 255 + 255;
   return result;
-}
-
-function getClimate() {
-  const climates = [0, 1, 2, 3, 4, 5, 6, 3, 7, 8, 1, 9, 10, 1, 2];
-  return climates[vine_location];
 }
 
 function locationAction() {
@@ -440,17 +436,9 @@ function doClouds() {
 function cloud(x, y) {
   fill(256, 125);
   ellipse(x, y, 64, 64);
-  // quad(x, y, x+40, y+18, x, y+36, x-40, y+18)
 
   fill("rgba(193,254,255, 0.25)");
   ellipse(x, y, 48, 48);
-  // y += 6
-  // quad(x, y, x+30, y+12, x, y+24, x-30, y+12)
-
-  // fill('rgba(255,255,255, 0.25)')
-  // // ellipse(x, y, 32, 32)
-  // y += 6
-  // quad(x, y, x+20, y+6, x, y+12, x-20, y+6)
 }
 
 function manor() {
