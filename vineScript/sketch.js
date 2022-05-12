@@ -76,7 +76,8 @@ function timeOfDay() {
 }
 
 function isNight() {
-  return timeOfDay() > 0.85 * day || timeOfDay() < 0.25 * day;
+  const time = timeOfDay();
+  return time > 0.85 * day || time < 0.25 * day;
 }
 
 function backgroundFromTime() {
@@ -94,11 +95,11 @@ function locationAction() {
 
 function doGround(h) {
   if (vine_soil == 0) fill("#c4c4c4");
-  if (vine_soil == 1) fill("#f3f4a0");
-  if (vine_soil == 2) fill("#eeb75d");
-  if (vine_soil == 3) fill("#0b6707");
-  if (vine_soil == 4) fill("#00952f");
-  if (vine_soil == 5) fill("#c5b973");
+  else if (vine_soil == 1) fill("#f3f4a0");
+  else if (vine_soil == 2) fill("#eeb75d");
+  else if (vine_soil == 3) fill("#0b6707");
+  else if (vine_soil == 4) fill("#00952f");
+  else if (vine_soil == 5) fill("#c5b973");
 
   rect(0, h, width, height);
 }
@@ -500,10 +501,13 @@ class Star {
 
 class Vineyard {
   constructor(i) {
-    if (i < numVines / 2) this.x = 100 + i * 40;
-    else this.x = -300 + i * 40;
-    if (i < numVines / 2) this.y = 500;
-    else this.y = 550;
+    if (i < numVines / 2) {
+      this.x = 100 + i * 40;
+      this.y = 500;
+    } else {
+      this.x = -300 + i * 40;
+      this.y = 550;
+    }
   }
 
   display() {
