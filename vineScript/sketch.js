@@ -2,7 +2,7 @@ const urlParams = new URLSearchParams(window.location.search);
 const seed = urlParams.get("seed").split("-");
 
 const vine_location = parseInt(seed[0]);
-const vine_elevation = parseInt(seed[1]);
+let vine_elevation = parseInt(seed[1]);
 if (seed[2] == 1) vine_elevation *= -1;
 const vine_soil = parseInt(seed[3]);
 const vine_xp = parseInt(seed[4]);
