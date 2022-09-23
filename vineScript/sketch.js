@@ -224,7 +224,7 @@ function mHeight(h, big = false) {
     elev_factor = map(vine_elevation, 117406080, 8448000, 0, 1);
     return elev_factor * h + 12;
   } else {
-    elev_factor = map(vine_elevation, -6000, 30000, 0, 1);
+    elev_factor = map(vine_elevation, -6000, 25000, 0, 1);
     return (1 - elev_factor) * h;
   }
 }
@@ -725,7 +725,6 @@ class Star {
 
 class Vineyard {
   constructor(i) {
-    this.i = i;
     if (vine_location < 17) {
       if (i < numVines / 2) {
         this.x = 100 + i * 40;
