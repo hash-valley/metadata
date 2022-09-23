@@ -8,14 +8,15 @@ const vine_soil = parseInt(seed[3]);
 const vine_xp = parseInt(seed[4]);
 
 const day = 86400;
-const climates = [0, 1, 2, 3, 4, 5, 6, 3, 7, 8, 1, 9, 4, 1, 2];
-const offsets = [2, 9, -7, -10, -2, 5, 9, 7, 6, -4, -4, 7, 8, -4, 2];
+const climates = [0, 1, 2, 3, 4, 5, 6, 3, 7, 8, 1, 9, 4, 1, 2, 10, 11, 12];
+const offsets = [2, 9, -7, -10, -2, 5, 9, 7, 6, -4, -4, 7, 8, -4, 2, -2, -5, 0];
 
 let numStars;
 let numVines = 20;
 let sky = [];
 let vines = [];
 let cloudX = -200;
+let cloudY = 550;
 let cloudsOn = false;
 let cnv;
 let trainX = -200;
@@ -25,13 +26,21 @@ function setup() {
   noStroke();
   numStars = map(vine_xp, 0, 100000, 0, 500);
 
-  if (isNight()) {
+  if (isNight() || vine_location == 16) {
     for (let i = 0; i < numStars; i++) {
       sky[i] = new Star();
     }
   }
-  for (let i = 0; i < numVines; i++) {
-    vines[i] = new Vineyard(i);
+
+  if (vine_location < 17) {
+    for (let i = 0; i < numVines; i++) {
+      vines[i] = new Vineyard(i);
+    }
+  } else {
+    for (let i = 0; i < numVines * 2; i++) {
+      vines[i] = new Vineyard(i);
+    }
+    numVines = 40;
   }
 
   cnv.mousePressed(function () {
@@ -40,12 +49,35 @@ function setup() {
 }
 
 function draw() {
-  background(backgroundFromTime(), 73, 100);
+  if (vine_location <= 14) {
+    background(backgroundFromTime(), 73, 100);
 
-  if (isNight()) {
+    if (isNight()) {
+      for (let i = 0; i < numStars; i++) {
+        sky[i].shine();
+      }
+    }
+  } else if (vine_location == 15) {
+    background(0, 45, backgroundFromTime());
+  } else if (vine_location == 16) {
+    background(0, 0, 0);
     for (let i = 0; i < numStars; i++) {
       sky[i].shine();
     }
+  } else if (vine_location == 17) {
+    background(255, 255, 255);
+    for (let i = 0; i < numStars; i++) {
+      sky[i].shine();
+    }
+  }
+
+  if (vine_location == 15) {
+    if (cloudsOn) {
+      cloudY -= 1.2;
+      if (cloudY == -100) cloudY = 510;
+    }
+
+    doBubbles();
   }
 
   locationAction();
@@ -58,11 +90,14 @@ function draw() {
     vines[i].display();
   }
 
-  if (cloudsOn) {
-    cloudX += 0.2;
-    if (cloudX == 700) cloudX = -200;
+  if (vine_location <= 14) {
+    if (cloudsOn) {
+      cloudX += 0.2;
+      if (cloudX == 700) cloudX = -200;
+    }
+
+    doClouds();
   }
-  doClouds();
 
   if (vine_location == 13) {
     trainX += 8;
@@ -160,8 +195,8 @@ function doTusks() {
 }
 
 function mHeight(h) {
-  let elev_factor = map(vine_elevation, -6000, 30000, 0, 1);
-  return elev_factor * (1 - h) + h;
+  let elev_factor = map(vine_elevation, -2000, 30000, 0, 1);
+  return (1 - elev_factor) * h;
 }
 
 function doTerrain() {
@@ -408,6 +443,47 @@ function doTerrain() {
     triangle(-80, 325, 150, mHeight(320), 500, 325);
     fill("#998e9f");
     triangle(200, 325, 450, mHeight(320), 800, 325);
+  } else if (vine_location == 15) {
+    //atlantis
+    doGround(425);
+
+    fill("#875e91");
+    triangle(-240, 425, 150, mHeight(280), 500, 425);
+    fill("#70abd0");
+    triangle(200, 425, 450, mHeight(380), 900, 425);
+
+    fill("#875e91");
+    ellipse(41, 464, 22, 22);
+    fill("#4b4153");
+    ellipse(34, 514, 32, 32);
+    fill("#a8d9cf");
+    ellipse(15, 515, 32, 32);
+    fill("#4b4153");
+    ellipse(415, 478, 28, 28);
+    fill("#e9ef15");
+    ellipse(199, 456, 20, 20);
+    fill("#e6859b");
+    ellipse(214, 452, 20, 20);
+    fill("#e9ef15");
+    ellipse(539, 488, 34, 34);
+    fill("#9267b7");
+    ellipse(518, 492, 34, 34);
+    fill("#54e7cb");
+    ellipse(560, 504, 28, 28);
+    fill("#e6859b");
+    ellipse(472, 438, 16, 16);
+    fill("#39d175");
+    ellipse(372, 442, 17, 17);
+    fill("#a8d9cf");
+    ellipse(378, 448, 17, 17);
+    fill("#9f344a");
+    ellipse(283, 466, 19, 19);
+  } else if (vine_location == 16) {
+    //secret
+    doGround(460);
+  } else if (vine_location == 17) {
+    //secret
+    // TODO
   }
 }
 
@@ -442,33 +518,127 @@ function cloud(x, y) {
   ellipse(x, y, 48, 48);
 }
 
+function doBubbles() {
+  fill(256, 125);
+  let x1s = [
+    cloudY + 74,
+    cloudY + 135,
+    cloudY + 40,
+    cloudY + 17,
+    cloudY,
+    cloudY + 55,
+    cloudY + 145,
+    cloudY + 95,
+  ];
+
+  bubble(x1s[0], 78);
+  bubble(x1s[1], 123);
+  bubble(x1s[2], 168);
+  bubble(x1s[3], 341);
+  bubble(x1s[4], 412);
+  bubble(x1s[5], 434);
+  bubble(x1s[6], 565);
+  bubble(x1s[7], 590);
+}
+
+function bubble(y, x) {
+  fill(256, 125);
+  ellipse(x, y, 64, 64);
+
+  fill("rgba(193,254,255, 0.25)");
+  ellipse(x - 15, y - 15, 12, 12);
+}
+
 function manor() {
-  fill("#e9edc5"); // white
-  rect(95, 415, 80, 70);
+  if (vine_location <= 14) {
+    fill("#e9edc5"); // white
+    rect(95, 415, 80, 70);
 
-  fill(0); // black
-  rect(105, 425, 8, 15);
-  rect(131, 425, 8, 15);
-  rect(157, 425, 8, 15);
-  rect(128.5, 470, 15, 15);
+    fill(0); // black
+    rect(105, 425, 8, 15);
+    rect(131, 425, 8, 15);
+    rect(157, 425, 8, 15);
+    rect(128.5, 470, 15, 15);
 
-  fill("#e96161"); //red
-  rect(95, 450, 80, 4);
-  quad(85, 415, 100, 405, 170, 405, 185, 415);
+    fill("#e96161"); //red
+    rect(95, 450, 80, 4);
+    quad(85, 415, 100, 405, 170, 405, 185, 415);
+  } else if (vine_location == 15) {
+    fill("#DDED0E"); // white
+    rect(95, 415, 80, 70);
+
+    fill(0); // black
+    rect(105, 425, 8, 15);
+    rect(131, 425, 8, 15);
+    rect(157, 425, 8, 15);
+    rect(128.5, 470, 15, 15);
+
+    fill("#f58f30"); //red
+    rect(95, 450, 80, 4);
+    quad(85, 415, 100, 405, 170, 405, 185, 415);
+  } else if (vine_location == 16) {
+    fill("#e9edc5"); // white
+    rect(195, 415, 80, 70);
+
+    fill(0); // black
+    rect(205, 425, 8, 15);
+    rect(231, 425, 8, 15);
+    rect(257, 425, 8, 15);
+    rect(228.5, 470, 15, 15);
+
+    fill("#e96161"); //red
+    rect(195, 450, 80, 4);
+    quad(185, 415, 200, 405, 270, 405, 285, 415);
+
+    fill("rgba(88,198,241,0.41)");
+    ellipse(300, 600, 700, 700);
+  } else if (vine_location == 17) {
+    fill("#e96161"); //red
+    ellipse(300, 300, 140, 140);
+
+    fill("#e9edc5"); // white
+    ellipse(300, 300, 120, 120);
+
+    fill("#e96161"); //red
+    ellipse(300, 300, 100, 100);
+
+    fill("#e9edc5"); // white
+    ellipse(300, 300, 80, 80);
+
+    fill(0); // black
+    ellipse(280, 300, 20, 20);
+    ellipse(320, 300, 20, 20);
+    ellipse(300, 280, 20, 20);
+    ellipse(300, 320, 20, 20);
+  }
 }
 
 function trellis() {
-  fill("#594300");
-  rect(102, 500, 365, 15);
-  rect(102, 550, 365, 15);
+  if (vine_location < 17) {
+    fill("#594300");
+    rect(102, 500, 365, 15);
+    rect(102, 550, 365, 15);
 
-  fill("#268415");
-  rect(102, 503, 365, 9);
-  rect(102, 553, 365, 9);
+    fill("#268415");
+    rect(102, 503, 365, 9);
+    rect(102, 553, 365, 9);
 
-  fill("#594300");
-  rect(102, 506, 365, 3);
-  rect(102, 556, 365, 3);
+    fill("#594300");
+    rect(102, 506, 365, 3);
+    rect(102, 556, 365, 3);
+  } else {
+    fill("#594300");
+    rect(0, 500, width, 15);
+    rect(0, 550, width, 15);
+
+    fill("#268415");
+    rect(0, 503, width, 9);
+    rect(0, 553, width, 9);
+
+    fill("#594300");
+    rect(0, 506, width, 3);
+    rect(0, 556, width, 3);
+  }
 }
 
 class Star {
@@ -484,12 +654,21 @@ class Star {
   shine() {
     if (this.a < 0) {
       this.x = random(width);
-      this.y = random(0, 475);
+      if (vine_location < 17) {
+        this.y = random(0, 475);
+      } else {
+        this.y = random(height);
+      }
+
       this.sz = random(3);
       this.dir = random(1, 3);
       this.a = 0;
     }
-    fill(this.c, this.a);
+    if (vine_location < 17) {
+      fill(this.c, this.a);
+    } else {
+      fill(0, this.a);
+    }
     rect(this.x, this.y, this.sz, this.sz);
     this.a = this.a + this.dir;
     if (this.a > 255) {
@@ -501,18 +680,30 @@ class Star {
 
 class Vineyard {
   constructor(i) {
-    if (i < numVines / 2) {
-      this.x = 100 + i * 40;
-      this.y = 500;
+    if (vine_location < 17) {
+      if (i < numVines / 2) {
+        this.x = 100 + i * 40;
+        this.y = 500;
+      } else {
+        this.x = -300 + i * 40;
+        this.y = 550;
+      }
     } else {
-      this.x = -300 + i * 40;
-      this.y = 550;
+      if (i < numVines) {
+        this.x = -4 + i * 40;
+        this.y = 500;
+      } else {
+        this.x = -4 + (i - 20) * 40;
+        this.y = 550;
+      }
     }
   }
 
   display() {
-    fill("#594300");
-    rect(this.x, this.y, 8, 32);
+    if (vine_location < 17) {
+      fill("#594300");
+      rect(this.x, this.y, 8, 32);
+    }
 
     fill("#268415");
     ellipse(this.x + 4, this.y + 7, 24, 24);
