@@ -494,6 +494,8 @@ let attributes = {
 let age = parseInt(seed[4]);
 let era = getBottleEra(age);
 
+let sum = raw.type + raw.subtype + raw.note + raw.name;
+
 let font;
 function preload() {
   font = loadFont("./font.ttf");
@@ -571,19 +573,50 @@ function doEra() {
 function label() {
   rotate(-HALF_PI / 2);
   textFont(font);
-  fill("black");
+  if (
+    attributes.subtype == "Hypercubic" ||
+    era === "Astral" ||
+    era == "Akashic"
+  ) {
+    fill("white");
+  } else {
+    fill("black");
+  }
   textSize(26);
   text(attributes.name, -170, 430);
 }
 
 function bottle() {
   noStroke();
-  fill("green");
+  if (attributes.type == "Exotic") {
+    if (attributes.subtype == "Aquatic") fill("rgb(140,247,238)");
+    if (attributes.subtype == "Nebulic") fill("rgb(139,55,184)");
+    if (attributes.subtype == "Hypercubic") fill("rgb(188,27,68)");
+  } else if (sum % 3 == 0) {
+    fill("rgb(219,137,77)");
+  } else if (sum % 4 == 0) {
+    fill("rgb(118,64,138)");
+  } else if (sum % 5 == 0) {
+    fill("rgb(167,82,114)");
+  } else if (sum % 7 == 0) {
+    fill("#1A1F39");
+  } else {
+    fill("green");
+  }
   quad(100, 400, 200, 500, 455, 245, 355, 150);
   quad(500, 80, 520, 100, 425, 225, 375, 175);
   fill("brown");
   quad(500, 80, 520, 100, 540, 90, 510, 60);
-  fill("white");
+
+  if (
+    attributes.subtype == "Hypercubic" ||
+    era === "Astral" ||
+    era == "Akashic"
+  ) {
+    fill("black");
+  } else {
+    fill("white");
+  }
   quad(140, 400, 200, 460, 400, 245, 355, 200);
 }
 

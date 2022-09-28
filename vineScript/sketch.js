@@ -224,7 +224,7 @@ function mHeight(h, big = false) {
     elev_factor = map(vine_elevation, 117406080, 8448000, 0, 1);
     return elev_factor * h + 12;
   } else {
-    elev_factor = map(vine_elevation, -6000, 25000, 0, 1);
+    elev_factor = map(vine_elevation, -6000, 30000, 0, 1);
     return (1 - elev_factor) * h;
   }
 }
@@ -296,6 +296,10 @@ function doTerrain() {
 
     fill("#CCD8D9");
     triangle(200, 325, 450, 250, 800, 325);
+
+    // hot air balloon
+    balloon(120, 130, "rgb(238,81,81)");
+    balloon(470, 155, "rgb(237,241,161)");
   } else if (vine_location == 3) {
     //denali
     doGround(275);
@@ -311,6 +315,11 @@ function doTerrain() {
     triangle(100, 425, 320, mHeight(425), 600, 425);
     fill("#416C6C");
     triangle(-200, 425, 0, mHeight(425), 400, 425);
+
+    // glaciers
+    fill("rgb(209,248,241)");
+    quad(60, 600, 30, 470, -10, 450, -10, 600);
+    quad(540, 600, 570, 470, 610, 450, 610, 600);
   } else if (vine_location == 4) {
     //madeira
     doGround(375);
@@ -380,6 +389,36 @@ function doTerrain() {
     triangle(200, 325, 450, mHeight(250), 800, 325);
     fill("#2a9720");
     triangle(-200, 325, 40, mHeight(305), 400, 325);
+
+    // trees
+    tree(74, 315, 22, 16);
+    tree(104, 319, 22, 16);
+    tree(118, 326, 22, 16);
+    tree(132, 316, 22, 16);
+    tree(162, 324, 22, 14);
+    tree(188, 316, 18, 24);
+    tree(238, 316, 29, 16);
+    tree(258, 322, 22, 26);
+    tree(288, 316, 26, 16);
+    tree(318, 316, 24, 18);
+    tree(358, 316, 19, 16);
+    tree(374, 336, 24, 24);
+
+    tree(104, 319, 22, 16);
+    tree(455, 335, 22, 14);
+    tree(335, 325, 32, 16);
+    tree(215, 315, 16, 18);
+    tree(535, 325, 42, 15);
+    tree(525, 315, 32, 21);
+    tree(515, 345, 31, 22);
+    tree(535, 325, 32, 16);
+    tree(475, 342, 32, 12);
+    tree(425, 335, 32, 16);
+    tree(410, 315, 32, 19);
+    tree(465, 315, 22, 16);
+    tree(575, 315, 38, 16);
+    tree(565, 345, 55, 23);
+    tree(585, 365, 26, 25);
   } else if (vine_location == 10) {
     //ohio
     doGround(325);
@@ -394,6 +433,27 @@ function doTerrain() {
     triangle(200, 325, 450, mHeight(250), 800, 325);
     fill("#7cc67c");
     triangle(-100, 345, 80, mHeight(250), 345, 345);
+
+    // trees
+    tree(14, 335, 22, 21);
+    tree(34, 345, 22, 18);
+    tree(54, 340, 22, 17);
+    tree(84, 340, 22, 25);
+    tree(112, 333, 22, 16);
+
+    tree(455, 335, 22, 14);
+    tree(335, 325, 32, 16);
+    tree(535, 325, 42, 15);
+    tree(525, 315, 32, 21);
+    tree(515, 345, 31, 22);
+    tree(535, 325, 32, 16);
+    tree(475, 342, 26, 12);
+    tree(425, 335, 23, 16);
+    tree(410, 315, 32, 19);
+    tree(465, 315, 22, 16);
+    tree(575, 315, 38, 16);
+
+    //mountain
     fill("#53c454");
     triangle(-200, 420, 210, mHeight(420), 1000, 420);
   } else if (vine_location == 12) {
@@ -404,6 +464,11 @@ function doTerrain() {
     triangle(-200, 325, 40, mHeight(310), 400, 325);
     fill("#657165");
     triangle(200, 325, 450, mHeight(250), 800, 325);
+
+    // pagoda lol
+    pagoda(490, 305);
+    pagoda(50, 290);
+    pagoda(270, 345);
   } else if (vine_location == 13) {
     //long island
     doGround(325);
@@ -473,6 +538,10 @@ function doTerrain() {
     triangle(-80, 325, 150, mHeight(320), 500, 325);
     fill("#998e9f");
     triangle(200, 325, 450, mHeight(320), 800, 325);
+
+    //windmill
+    windmill(500, 360);
+    windmill(200, 300);
   } else if (vine_location == 15) {
     //atlantis
     doGround(425);
@@ -684,6 +753,51 @@ function trellis() {
     rect(0, 506, width, 3);
     rect(0, 556, width, 3);
   }
+}
+
+function windmill(x, y) {
+  fill("rgb(117,42,42)");
+  ellipse(x, y, 30, 30);
+  quad(x - 15, y, x + 15, y, x + 20, y + 55, x - 20, y + 55);
+  fill("brown");
+  triangle(x, y, x - 48, y - 8, x - 48, y + 8);
+  triangle(x, y, x + 48, y + 8, x + 48, y - 8);
+  triangle(x, y, x - 8, y - 48, x + 8, y - 48);
+  triangle(x, y, x - 8, y + 40, x + 8, y + 40);
+}
+
+function pagoda(x, y) {
+  // 440 305
+  fill("#F6FAD6"); // white
+  rect(x, y, 40, 80);
+
+  fill("black");
+  rect(x + 10, y + 70, 10, 10);
+
+  fill("#e96161"); //red
+  quad(x, y, x + 40, y, x + 75, y + 10, x - 35, y + 10);
+  quad(x, y + 20, x + 40, y + 20, x + 75, y + 30, x - 35, y + 30);
+  quad(x, y + 40, x + 40, y + 40, x + 75, y + 50, x - 35, y + 50);
+}
+
+function balloon(x, y, color) {
+  let size = 60;
+  stroke("white");
+  line(x - 11, y + 50, x - 18, y + 15);
+  line(x + 11, y + 50, x + 18, y + 15);
+  noStroke();
+  fill(color);
+  ellipse(x, y, size, size);
+  fill("brown");
+  quad(x - 12, y + 50, x + 12, y + 50, x + 10, y + 60, x - 10, y + 60);
+}
+
+function tree(x, y, height, width) {
+  fill("brown");
+  quad(x - 2, y, x + 2, y, x + 2, y + height, x - 2, y + height);
+
+  fill("#68B35A");
+  ellipse(x, y, width, width);
 }
 
 class Star {
