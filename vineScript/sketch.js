@@ -159,6 +159,9 @@ function doGround(h) {
   else if (vine_soil == 3) fill("#0b6707");
   else if (vine_soil == 4) fill("#00952f");
   else if (vine_soil == 5) fill("#c5b973");
+  else if (vine_soil == 6) fill("#e8afa1");
+  else if (vine_soil == 7) fill("#2d2921");
+  else if (vine_soil == 8) fill("#f1eae3");
 
   rect(0, h, width, height);
 }
