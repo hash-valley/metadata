@@ -24,6 +24,16 @@ def format_json(num, mints, v1minter):
         outfile.write(ty_json)
 
 
+import os
+  
+# checking if the directory demo_folder 
+# exist or not.
+if not os.path.exists("ty"):
+      
+    # if the demo_folder directory is not present 
+    # then create it.
+    os.makedirs("ty")
+
 v1_minters = [17, 3, 15, 7, 6, 1, 9, 19, 1, 5, 4, 4, 8]
 other = 6
 for i in range(len(v1_minters) + other):
