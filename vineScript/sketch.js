@@ -349,10 +349,10 @@ function doTerrain() {
     fill("#CCD8D9");
     triangle(-100, 275, 70, mHeight(275), 300, 275);
     triangle(200, 275, 425, mHeight(275), 900, 275);
-    fill("#B8CBCD");
-    triangle(-200, 375, 270, mHeight(375), 1000, 375);
     fill("#94AEB2");
     triangle(60, 275, 280, mHeight(275), 490, 275);
+    fill("#B8CBCD");
+    triangle(-200, 375, 270, mHeight(375), 1000, 375);
     fill("#6E9091");
     triangle(100, 425, 320, mHeight(425), 600, 425);
     fill("#416C6C");
