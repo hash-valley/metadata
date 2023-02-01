@@ -5,15 +5,17 @@ def format_json(num, mints, v1minter):
     if v1minter:
         message = "Thank you for being an early supporter of Hash Valley. You've received a giveaway token for each V1 mint that can be redeemed for a free vineyard at the launch"
         attributes = [{"trait_type": "V1 Mints", "value": mints}]
+        image = 'ipfs://bafybeihzxgetcfgpjl37ypz7nhv6anda2qxhwodmyog5d2kljq4g2vpzsa'
     else:
         message = "Thank you for being an early supporter of Hash Valley. You've received giveaway tokens for that can be redeemed for a free vineyard at the launch"
         attributes = [{"trait_type": "Bonus", "value": mints}]
+        image = "ipfs://bafybeihoildyra3kvs7yhg27xpvfsz2wbttgj3blz5tb5oiyr5mcuejaja"
 
     ty_json = json.dumps(
         {
             "name": f"Hash Valley Winery Early Supporter #{num}",
             "external_url": "https://hashvalley.xyz",
-            "image": "ipfs://bafybeiapbv7y2ivmcspegc3lswwy4cmdavndedwopuci3mogcoyo4cdaja",
+            "image": image,
             "description": message,
             "attributes": attributes
         },
