@@ -504,6 +504,9 @@ function preload() {
 const Y_AXIS = 1;
 const X_AXIS = 2;
 
+let rotation = 0;
+let angularVelocity = 0;
+
 let sparkles = [];
 
 function addSparkle() {
@@ -556,6 +559,14 @@ function displayTastingNotes() {
   displayNotes = !displayNotes;
 }
 
+function mouseDragged() {
+  // Calculate the change in mouse position
+  let dx = mouseX - pmouseX;
+
+  // Update the angular velocity based on the mouse movement
+  angularVelocity = -dx * 0.01; // Note the negative sign here
+}
+
 function draw() {
   let bg;
   if (attributes.type == "Red") bg = color("#9d0e41");
@@ -602,8 +613,20 @@ function draw() {
     sparkle(500, 350);
     sparkle(100, 250);
   }
+
+  // Update the rotation angle based on the angular velocity
+  rotation += angularVelocity;
+
+  // Apply a deceleration to the angular velocity
+  angularVelocity *= 0.95; // Adjust this value to control the rate of deceleration
+
+  // Apply the rotation
+  push();
+  translate(width / 2, height / 2);
+  rotate(rotation);
+  translate(-width / 2, -height / 2);
+
   bottle();
-  doEra();
   label();
 
   if (displayNotes) {
@@ -618,9 +641,15 @@ function draw() {
     text(attributes.subtype, -180, 524);
     text(attributes.note, -180, 564);
   }
+
+  // Reset the transformation
+  pop();
+
+  doEra();
 }
 
 function doEra() {
+  textFont(font);
   if (attributes.type == "Red" || attributes.subtype == "Red") {
     fill("white");
   } else {
